@@ -1,10 +1,19 @@
 CC=g++
 CFLAGS = -o
-CPP = TemplateOverloading.cpp
-NAME = TemplateOverloading
+CPPTO = TemplateOverloading.cpp
+NAMETO = TemplateOverloading
+CPPBT = Hidato Puzzle.cpp
+NAMEBT = BasicTO
+
+TO:
+	$(CC) $(CPPTO) $(CFLAGS) $(NAMETO)
+	
+BT:
+	$(CC) $(CPPBT) $(CFLAGS) $(NAMEBT)
 
 all:
-	$(CC) $(CPP) $(CFLAGS) $(NAME)
+	$(CC) $(CPPTO) $(CFLAGS) $(NAMETO)
+	$(CC) $(CPPBT) $(CFLAGS) $(NAMEBT)
 
 clean:
-	rm $(NAME)
+	rm $(NAMETO) $(NAMEBT)
