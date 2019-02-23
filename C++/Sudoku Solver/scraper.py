@@ -22,7 +22,7 @@
 #  
 #  
 
-# imports
+# import declarations
 import requests, sys, os, re
 from bs4 import BeautifulSoup
 
