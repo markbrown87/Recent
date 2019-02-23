@@ -1,11 +1,14 @@
 CC=g++
 CFLAGS = -o
 CPP = stackExample.cpp
-NAME = stack
+NAME = stackExample
 
 
 all:
 	$(CC) $(CPP) $(CFLAGS) $(NAME)
+	
+debug:
+	$(CC) -g $(CPP) $(CFLAGS) $(NAME)
 
 clean:
-	rm $(NAME) 
+	rm $(NAME) *.o
