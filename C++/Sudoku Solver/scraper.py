@@ -23,10 +23,8 @@
 #  
 
 # imports
-import requests
-import sys
+import requests, sys, os, re
 from bs4 import BeautifulSoup
-import pandas as pd
 
 # global variables
 urlx2 = 'https://www.menneske.no/sudoku/2/eng/'
@@ -35,12 +33,55 @@ urlx4 = 'https://www.menneske.no/sudoku/4/eng/'
 urlx5 = 'https://www.menneske.no/sudoku/5/eng/'
 
 # Check if file already exists (change name of new file to include incremented value)
+def FileChecker(pSize):
+	
+	pSize = str(pSize)
+	newFile = ""
+	incNum = 0
+	
+	myBinFolder = os.getcwd() + "/bin"
+	myBinFile = "/" + pSize + "x" + pSize + ".bin"
+	
+	if not os.path.isdir(myBinFolder):
+		os.makedirs(myBinFolder)	
+		print('Creating Bin folder in: ', myBinFolder)
 
+	for files in os.listdir(myBinFolder):
+		if bool(re.match(pSize + "x" + pSize + "_*\d*\d*.bin", files)):
+			print('There was a file match...')
+			
+			if bool(re.match(pSize + "x" + pSize + ".bin", files)):
+				newFile = myBinFolder + "/" + pSize + "x" + pSize + "_01.bin"
+				
+			elif bool(re.match(pSize + "x" + pSize + "_\d\d.bin", files)):
+				files = re.search("\d\d", files).group(0)
+				
+				if incNum <= int(files):
+					incNum = int(files) + 1
+
+	
+	if incNum > 0:
+		if incNum < 10:
+			newFile = myBinFolder + "/" + pSize + "x" + pSize + "_0" + str(incNum) + ".bin"
+					
+		else:
+			newFile = myBinFolder + "/" + pSize + "x" + pSize + "_" + str(incNum) + ".bin"
+			
+	else:
+		newFile = myBinFolder + "/" + pSize + "x" + pSize + ".bin"
+	
+	return newFile
 
 # Print list data to .bin file
+def PrintList(pSize, com):
+	newFile = FileChecker(pSize)
+	
+	with open(newFile, "w") as handle:
+		print(com, file=handle)
+		print('Printed to file: ' + newFile)
 
 
-# Compose List
+# Compose List; parses the list and returns the nice pretty list of values in the sudoku puzzle
 def comList(myTable):
 	
 	com = []
@@ -50,7 +91,7 @@ def comList(myTable):
 		col = [ele.text.strip() for ele in col]
 		com.append([ele for ele in col])
 	
-	print(com)
+	return com
 	
 
 # switch statment that returns the proper URL for the corresponding sudoku size
@@ -65,7 +106,7 @@ def switch(value):
 	
 	return switcher.get(value, "Invalid Selection")
 
-# INSERT DESCRIPTION HAPPENING HERE
+# takes in the argv as inputs to make a 2x2,3x3,4x4,5x5 sudoku puzzle and spits it into a bin file
 def main(args):
 	
 	if len(args) == 2:
@@ -80,7 +121,10 @@ def main(args):
 				myTable = soup.find('div',{'class':'grid'})
 				myTable = myTable.find('table')
 				
-				comList(myTable)
+				com = comList(myTable)
+				
+				PrintList(pSize, com)
+				
 			else:
 				print('Please input between 2 and 5 (inclusive)')
 			
