@@ -48,7 +48,6 @@ def FileChecker(pSize):
 
 	for files in os.listdir(myBinFolder):
 		if bool(re.match(pSize + "x" + pSize + "_*\d*\d*.bin", files)):
-			print('There was a file match...')
 			
 			if bool(re.match(pSize + "x" + pSize + ".bin", files)):
 				newFile = myBinFolder + "/" + pSize + "x" + pSize + "_01.bin"
@@ -61,13 +60,16 @@ def FileChecker(pSize):
 
 	
 	if incNum > 0:
+		
+		print('There was a file match...')
+		
 		if incNum < 10:
 			newFile = myBinFolder + "/" + pSize + "x" + pSize + "_0" + str(incNum) + ".bin"
 					
 		else:
 			newFile = myBinFolder + "/" + pSize + "x" + pSize + "_" + str(incNum) + ".bin"
 			
-	else:
+	elif newFile == "":
 		newFile = myBinFolder + "/" + pSize + "x" + pSize + ".bin"
 	
 	return newFile
