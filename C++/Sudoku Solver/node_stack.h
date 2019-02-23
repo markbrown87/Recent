@@ -17,7 +17,8 @@
 template <class T>
 struct Node {
 	Node<T> *prev;
-	T data;
+	T data[25][25];
+	std::string fileName;
 };
 
 //	Stack (or stk for short) is a class data structure that houses all the possibilies that a stack could
@@ -31,7 +32,7 @@ class stk{
 	
 	// basic functions that allow for normal stack functionality
 	void pop();
-	void push(T data);
+	void push(T data[25][25], std::string fileName);
 	T peek();
 	
 	//overloaded '=' operator between two Node structs
@@ -115,13 +116,14 @@ void stk<T>::pop(){
 
 // Pushes a new item onto the stack
 template <class T>
-void stk<T>::push(T data){
+void stk<T>::push(T data[25][25], std::string fileName){
 	Node<T> *newNode;
 	newNode = new Node<T>;
 	
 	if(current == NULL){
 		// FYI the '->' is like saying newNode.data BUT you have to use '->' instead with pointers
 		newNode -> data = data;
+		newNode -> fileName = fileName;
 		newNode -> prev = NULL;
 		
 		current = newNode;
@@ -130,6 +132,7 @@ void stk<T>::push(T data){
 	}
 	else{
 		newNode -> data = data;
+		newNode -> fileName = fileName;
 		newNode -> prev = current;
 		
 		current = newNode;
