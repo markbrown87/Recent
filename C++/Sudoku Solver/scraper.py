@@ -43,7 +43,15 @@ urlx5 = 'https://www.menneske.no/sudoku/5/eng/'
 # Compose List
 def comList(myTable):
 	
-	return 0
+	com = []
+	
+	for row in myTable.find_all('tr'):
+		col = row.find_all('td')
+		col = [ele.text.strip() for ele in col]
+		com.append([ele for ele in col])
+	
+	print(com)
+	
 
 # switch statment that returns the proper URL for the corresponding sudoku size
 def switch(value):
@@ -72,8 +80,7 @@ def main(args):
 				myTable = soup.find('div',{'class':'grid'})
 				myTable = myTable.find('table')
 				
-				print(myTable)
-				# comList(myTable)
+				comList(myTable)
 			else:
 				print('Please input between 2 and 5 (inclusive)')
 			
