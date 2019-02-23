@@ -22,25 +22,42 @@
 #  
 #  
 
+# imports
 import requests
 import sys
 from bs4 import BeautifulSoup
+import pandas as pd
+
+# global variables
 urlx2 = 'https://www.menneske.no/sudoku/2/eng/'
 urlx3 = 'https://www.menneske.no/sudoku/eng/'
 urlx4 = 'https://www.menneske.no/sudoku/4/eng/'
 urlx5 = 'https://www.menneske.no/sudoku/5/eng/'
 
+# Check if file already exists (change name of new file to include incremented value)
+
+
+# Print list data to .bin file
+
+
+# Compose List
+def comList(myTable):
+	
+	return 0
+
+# switch statment that returns the proper URL for the corresponding sudoku size
 def switch(value):
+	
 	switcher = {
-		2: "Two",
-		3: "Three",
-		4: "Four",
-		5: "Five"
+		2: requests.get(urlx2).text,
+		3: requests.get(urlx3).text,
+		4: requests.get(urlx4).text,
+		5: requests.get(urlx5).text
 	}
 	
 	return switcher.get(value, "Invalid Selection")
 
-
+# INSERT DESCRIPTION HAPPENING HERE
 def main(args):
 	
 	if len(args) == 2:
@@ -48,8 +65,15 @@ def main(args):
 			pSize = int(args[1])
 			
 			if pSize > 1 and pSize < 6:
-				print('Perfect amount: ', switch(pSize))
-			
+				html = switch(pSize)
+				
+				soup = BeautifulSoup(html, 'lxml')
+				
+				myTable = soup.find('div',{'class':'grid'})
+				myTable = myTable.find('table')
+				
+				print(myTable)
+				# comList(myTable)
 			else:
 				print('Please input between 2 and 5 (inclusive)')
 			
@@ -59,6 +83,8 @@ def main(args):
 		print('Incorret amount of arguments')
 	
 	return 0
+	
+	
 
 if __name__ == '__main__':
     
