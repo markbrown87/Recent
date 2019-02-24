@@ -27,6 +27,7 @@
 #include <vector>
 #include <fstream>
 #include <regex>
+#include <sstream>
 #include "node_stack.h"
 
 // Queues up the files
@@ -53,13 +54,27 @@ QueueLoader::QueueLoader(){
 // Takes in a string and then parses it into a 2D vector
 void QueueLoader::parseData(std::string rawData){
 
-	std::regex exp("\'\'");
+	std::regex emptyData("\'\'");
+	std::regex digits("-*[0-9]");
+	std::regex lines("\\], \\[");
+	std::smatch match;
 	
-	rawData = std::regex_replace(rawData,exp,"-1");
+	std::vector<std::string> rows(5);
+	std::string token;
+	//int i = 0, j = 0;
 	
-	std::cout << rawData << std::endl;
+	rawData = std::regex_replace(rawData,emptyData,"'-1'");	
+	rawData = std::regex_replace(rawData,lines,"]\n[");		
+	std::stringstream tmp(rawData);
+	
+	while(std::getline(tmp,token,'\n'))
+		rows.push_back(token);
 
-	// do stuff
+	for(int k = 0; k < rows.size(); ++k){
+		if(rows[k] != "")
+			std::cout << rows[k] << ": In Vector" << std::endl;
+	}
+	
 	
 }
 
