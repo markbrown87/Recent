@@ -11,6 +11,14 @@
 
 int main(int argc, char **argv)
 {
+	QueueLoader queue;
+	
+	std::vector<std::vector<int>> parsedData;
+	
+	queue.loadQueue();
+	
+	parsedData = queue.useData();
+	
 	
 	return 0;
 }

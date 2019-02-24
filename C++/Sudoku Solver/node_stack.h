@@ -36,7 +36,7 @@ class stk{
 	T peek();
 	
 	//overloaded '=' operator between two Node structs
-	Node<T>& operator=(const Node<T> &other); 
+	Node<T>& operator=(const Node<T> &other);  
 	
 	protected:
 	void destroyStack();

@@ -24,5 +24,52 @@
 
 #include <iostream>
 #include <string>
+#include <vector>
 #include "node_stack.h"
 
+// Queues up the files
+// CONSIDER RETURNING TO THIS AND MAKING IT A STRUCT IN STEAD
+class QueueLoader{
+	stk<int> stack;
+	std::vector<std::vector<int>> parsedData;
+	void parseData(std::string dataLine);
+	std::string scanFile();
+	
+	public:
+	QueueLoader();
+	void loadQueue();
+	std::vector<std::vector<int>> useData();
+};
+
+// Constructor
+QueueLoader::QueueLoader(){
+	// nothing to create
+}
+
+// Takes in a string and then parses it into a 2D vector
+void QueueLoader::parseData(std::string dataLine){
+
+	//PARSE THAT DATA BIG BOY!!!
+	
+}
+
+//Scans the file in and gets the string in the bin file
+std::string QueueLoader::scanFile(){
+	
+	std::string lineOfData;
+	
+	return lineOfData;
+}
+
+// builds the stack and returns it for use in the main file
+void QueueLoader::loadQueue(){
+	stk<int> tmp;
+	
+	//Loop here to get all files!
+
+}
+
+// reads out parsed data
+std::vector<std::vector<int>> QueueLoader::useData(){
+	return parsedData;
+}
