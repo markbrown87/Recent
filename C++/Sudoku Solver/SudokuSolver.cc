@@ -13,15 +13,33 @@ int main(int argc, char *argv[])
 {
 	QueueLoader queue;
 	
-	std::vector<std::vector<int>> parsedData;
+	int** data;
+	int j = 0;
 	
 	std::string rawData = "";
-	std::getline(std::cin, rawData);
+	while(std::getline(std::cin, rawData)){
+		std::cout << rawData << std::endl;
+		queue.loadQueue(rawData);
+	}
 	
 	
-	queue.loadQueue(rawData);
+	data = queue.useData();
 	
-	//parsedData = queue.useData();
+	while(data != NULL){
+		
+		for(int i = 0; i < 25; ++i){
+			for(j = 0; j < 25; ++j){
+				if(data[i][j] != -1)
+					std::cout << data[i][j] << " ";
+			}
+			j = 0;
+			if(data[i][j] != -1)
+				std::cout << std::endl;	
+		}
+		
+		queue.nextItem();
+		data = queue.useData();
+	}
 	
 	
 	return 0;

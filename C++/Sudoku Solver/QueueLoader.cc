@@ -37,18 +37,27 @@ class QueueLoader{
 	
 	int** parsedData = new int*[25];
 	void parseData(std::string rawData);
-	//~ std::string scanFile();
 	
 	public:
 	QueueLoader();
 	void loadQueue(std::string rawData);
 	int** useData();
+	void nextItem();
 };
 
 // Constructor
 QueueLoader::QueueLoader(){
+	int j = 0;
+	
 	for (int i = 0; i < 25; ++i)
 		parsedData[i] = new int[25];
+	
+	for (int i = 0; i < 25; ++i){
+		for(j = 0; j < 25; ++j)
+			parsedData[i][j] = -1;
+		
+		j = 0;
+	}
 }
 
 // Takes in a string and then parses it into a 2D vector
@@ -61,20 +70,28 @@ void QueueLoader::parseData(std::string rawData){
 	
 	std::vector<std::string> rows(5);
 	std::string token;
-	//int i = 0, j = 0;
+	int i = 0, j = 0;
 	
-	rawData = std::regex_replace(rawData,emptyData,"'-1'");	
+	rawData = std::regex_replace(rawData,emptyData,"'0'");	
 	rawData = std::regex_replace(rawData,lines,"]\n[");		
 	std::stringstream tmp(rawData);
 	
 	while(std::getline(tmp,token,'\n'))
 		rows.push_back(token);
 
-	for(int k = 0; k < rows.size(); ++k){
-		if(rows[k] != "")
-			std::cout << rows[k] << ": In Vector" << std::endl;
+	for(unsigned int k = 0; k < rows.size(); ++k){
+		if(rows[k] != ""){
+			//std::cout << rows[k] << ": In Vector" << std::endl;
+			while(std::regex_search(rows[k], match, digits)){
+				for (auto x:match) parsedData[i][j] = stoi(x);
+				rows[k] = match.suffix().str();
+				++j;
+			}
+			++i;
+			j = 0;
+		}
+			
 	}
-	
 	
 }
 
@@ -94,7 +111,7 @@ void QueueLoader::loadQueue(std::string rawData){
 	
 	parseData(rawData);
 	
-	//stack.push(parsedData);
+	stack.push(parsedData);
 	
 	//Loop here to get all files!
 
@@ -102,5 +119,10 @@ void QueueLoader::loadQueue(std::string rawData){
 
 // reads out parsed data
 int** QueueLoader::useData(){
-	return parsedData;
+	return stack.peek();
+}
+
+// pops and cycles to next item
+void QueueLoader::nextItem(){
+	stack.pop();
 }
