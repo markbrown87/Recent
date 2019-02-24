@@ -35,6 +35,7 @@ class QueueLoader{
 	
 	public:
 	QueueLoader();
+	~QueueLoader();
 	void loadQueue(std::string rawData);
 	int** useData();
 	void nextItem();
@@ -43,6 +44,11 @@ class QueueLoader{
 // Constructor
 QueueLoader::QueueLoader(){
 	// nothing here
+}
+
+// Deconstructor
+QueueLoader::~QueueLoader(){
+	delete [] parsedData;
 }
 
 // builds the stack and returns it for use in the main file

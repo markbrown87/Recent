@@ -7,11 +7,13 @@
 
 #include <iostream>
 #include <string>
+#include <math.h>
 #include "QueueLoader.cc"
 
 void solveIt(int** data);
 void fillRow(int** data);
-int getDim(int** data);
+int getLength(int** data);
+int* getArrayOfNums(int** data, int col);
 
 class Boards{	
 	int copy[25][25];
@@ -29,7 +31,6 @@ int main(int argc, char *argv[])
 	Boards copy;
 	
 	int** data;
-	int j = 0;
 	
 	std::string rawData = "";
 	while(std::getline(std::cin, rawData)){
@@ -42,26 +43,34 @@ int main(int argc, char *argv[])
 	
 	while(data != NULL){
 		
-		for(int i = 0; i < 25; ++i){
-			for(int j = 0; j < 25; ++j)
-				if(data[i][j] != -1){
-					//solveIt(data);
-					std::cout << data[i][j] << " ";
-					
-				}
-				
-			if(data[i][j] != -1)
-				std::cout << std::endl;	
+		std::cout << "Solving Puzzle now...\n";
+		
+		int lth = getLength(data);
+		
+		for(int i = 0; i < lth; ++i){
+			int* tmp = NULL;
+			
+			tmp = new int[lth];
+			
+			tmp = getArrayOfNums(data, i);
+			
+			std::cout << "Missing Numbers: ";
+			
+			for(int j = 0; j < lth; ++j)
+				std::cout << tmp[j] << " ";
+			
+			std::cout << std::endl;
+			
+			delete [] tmp;
 		}
 		
-		std::cout << "Dim count: " << getDim(data) << std::endl;
 		
 		queue.nextItem();
 		data = queue.useData();
 	}
 	
 	
-
+	delete [] data;
 	return 0;
 }
 
@@ -75,17 +84,42 @@ Boards::Boards(){
 // Make copy of board (check immutability)
 void Boards::makeCopy(int** data){
 	for(int i = 0; i < 25; ++i)
-		for(int j = 0; j < 25; ++j)
-			copy[i][j] = data[i][j];
+		for(int j = 0; j < 25; ++j){
+			if(data[i][j] == -1)
+				copy[i][j] = -2;
+			else
+				copy[i][j] = data[i][j];
+				
+		}
+}
+
+// find missing numbers
+int* getArrayOfNums(int** data, int row){
+	int count = getLength(data);
+	
+	int * temp = NULL;
+	
+	temp = new int[count];
+	
+	for(int i = 0; i < count; ++i)
+		temp[i] = i + 1;
+		
+	for(int i = 0; i < count; ++i)
+		for(int j = 0; j < count; ++j)
+			if(temp[i] == data[row][j]){
+				temp[i] = 0;
+			}
+	
+	return temp;
 }
 
 // fills in the rows with needed values
 void fillRow(int** data){
-	// fill row with missing values
+	
 }
 
 // returns to the count of the dimension
-int getDim(int** data){
+int getLength(int** data){
 	int count = 0;
 	
 	for(int i = 0; i < 25; ++i){
@@ -100,7 +134,7 @@ int getDim(int** data){
 
 // returns bool if value can be changed
 bool Boards::checkMutability(int row, int col){
-	return (copy[row][col] == -1);
+	return (copy[row][col] != 0);
 }
 
 // takes in the pointer and solves the puzzle
