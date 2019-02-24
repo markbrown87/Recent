@@ -26,8 +26,6 @@
 #include <string>
 #include <vector>
 #include <fstream>
-#include <regex>
-#include <sstream>
 #include "node_stack.h"
 
 // Queues up the files
@@ -35,8 +33,8 @@
 class QueueLoader{
 	stk stack;
 	
-	int** parsedData = new int*[25];
-	void parseData(std::string rawData);
+	int** parsedData;
+	//~ void parseData(std::string rawData);
 	
 	public:
 	QueueLoader();
@@ -47,74 +45,22 @@ class QueueLoader{
 
 // Constructor
 QueueLoader::QueueLoader(){
-	int j = 0;
-	
-	for (int i = 0; i < 25; ++i)
-		parsedData[i] = new int[25];
-	
-	for (int i = 0; i < 25; ++i){
-		for(j = 0; j < 25; ++j)
-			parsedData[i][j] = -1;
-		
-		j = 0;
-	}
+	// nothing here
 }
 
-// Takes in a string and then parses it into a 2D vector
-void QueueLoader::parseData(std::string rawData){
+//~ // Takes in a string and then parses it into a 2D vector
+//~ void QueueLoader::parseData(std::string rawData){
 
-	std::regex emptyData("\'\'");
-	std::regex digits("-*[0-9]");
-	std::regex lines("\\], \\[");
-	std::smatch match;
 	
-	std::vector<std::string> rows(5);
-	std::string token;
-	int i = 0, j = 0;
-	
-	rawData = std::regex_replace(rawData,emptyData,"'0'");	
-	rawData = std::regex_replace(rawData,lines,"]\n[");		
-	std::stringstream tmp(rawData);
-	
-	while(std::getline(tmp,token,'\n'))
-		rows.push_back(token);
-
-	for(unsigned int k = 0; k < rows.size(); ++k){
-		if(rows[k] != ""){
-			//std::cout << rows[k] << ": In Vector" << std::endl;
-			while(std::regex_search(rows[k], match, digits)){
-				for (auto x:match) parsedData[i][j] = stoi(x);
-				rows[k] = match.suffix().str();
-				++j;
-			}
-			++i;
-			j = 0;
-		}
-			
-	}
-	
-}
-
-//~ //Scans the file in and gets the string in the bin file
-//~ std::string QueueLoader::scanFile(){
-	
-	//~ std::string lineOfData;
-	
-	//~ ifstream inFile;
-	//~ inFile.open
-	
-	//~ return lineOfData;
 //~ }
+
 
 // builds the stack and returns it for use in the main file
 void QueueLoader::loadQueue(std::string rawData){
 	
-	parseData(rawData);
-	
+	parsedData = stack.parseString(rawData);
 	stack.push(parsedData);
 	
-	//Loop here to get all files!
-
 }
 
 // reads out parsed data

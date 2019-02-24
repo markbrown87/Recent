@@ -8,6 +8,8 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <sstream>
+#include <regex>
 
 #ifndef __NODE_H__
 #define __NODE_H__
@@ -38,6 +40,7 @@ class stk{
 	void pop();
 	void push(int** data);
 	int** peek();
+	int** parseString(std::string rawData);
 	
 	//~ //overloaded '=' operator between two Node structs
 	//~ Node& operator=(const Node &other);  
@@ -50,7 +53,8 @@ class stk{
 
 // Constructor
 stk::stk(){
-	current = NULL; 
+	current = NULL;
+	//current -> data = NULL;
 }
 
 // Destructor
@@ -109,6 +113,56 @@ void stk::pop(){
 		delete temp;
 		std::cout << "Data item popped." << std::endl;
 	}
+}
+
+// Assigns data to the node item
+int** stk::parseString(std::string rawData){
+	
+	int **tmpPtr = new int*[25];
+	int j = 0;
+	
+	for (int i = 0; i < 25; ++i)
+		tmpPtr[i] = new int[25];
+	
+	for (int i = 0; i < 25; ++i){
+		for(j = 0; j < 25; ++j)
+			tmpPtr[i][j] = -1;
+		
+		j = 0;
+	}
+	
+
+	std::regex emptyData("\'\'");
+	std::regex digits("-*[0-9]");
+	std::regex lines("\\], \\[");
+	std::smatch match;
+	
+	std::vector<std::string> rows(5);
+	std::string token;
+	int m = 0, n = 0;
+	
+	rawData = std::regex_replace(rawData,emptyData,"'0'");	
+	rawData = std::regex_replace(rawData,lines,"]\n[");		
+	std::stringstream tmp(rawData);
+	
+	while(std::getline(tmp,token,'\n'))
+		rows.push_back(token);
+
+	for(unsigned int k = 0; k < rows.size(); ++k){
+		if(rows[k] != ""){
+			//std::cout << rows[k] << ": In Vector" << std::endl;
+			while(std::regex_search(rows[k], match, digits)){
+				for (auto x:match) tmpPtr[m][n] = stoi(x);
+				rows[k] = match.suffix().str();
+				++n;
+			}
+			++m;
+			n = 0;
+		}
+			
+	}
+	
+	return tmpPtr;
 }
 
 // Pushes a new item onto the stack
