@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <string>
+#include <vector>
 
 #ifndef __NODE_H__
 #define __NODE_H__
@@ -14,16 +15,19 @@
 //	Structure data structure is no different than a class other than Structure members are public by default 
 // 		.. and classes are private by default. Both have public, private, and protected.
 // 		-> Note: protected is just like private other than the variables can be inherited.
-template <class T>
+
 struct Node {
-	Node<T> *prev;
-	T data[25][25];
-	std::string fileName;
+	Node *prev;
+	int **data;
+	
+	//overloaded '=' operator between two Node structs
+	Node& operator=(const Node &other);
+	
 };
 
 //	Stack (or stk for short) is a class data structure that houses all the possibilies that a stack could
 //		.. use normally; pop, push, and peak.
-template <class T>
+
 class stk{
 	public:
 	// constructor and destructor
@@ -32,56 +36,50 @@ class stk{
 	
 	// basic functions that allow for normal stack functionality
 	void pop();
-	void push(T data[25][25], std::string fileName);
-	T peek();
+	void push(int** data);
+	int** peek();
 	
-	//overloaded '=' operator between two Node structs
-	Node<T>& operator=(const Node<T> &other);  
+	//~ //overloaded '=' operator between two Node structs
+	//~ Node& operator=(const Node &other);  
 	
 	protected:
 	void destroyStack();
 	
-	Node<T> *current;
+	Node *current;
 };
 
 // Constructor
-template <class T>
-stk<T>::stk(){
+stk::stk(){
 	current = NULL; 
 }
 
 // Destructor
-template <class T>
-stk<T>::~stk(){
+stk::~stk(){
 	destroyStack();
 }
 
 // takes a peak at the current data
-template <class T>
-T stk<T>::peek(){
+int** stk::peek(){
 	if(current != NULL)
 		return current -> data;
 	else
-		return "Empty Stack";
+		return NULL;
 }
 
 // Destroys the Stack and all items
-template <class T>
-void stk<T>::destroyStack(){
-	Node<T> *temp;
+void stk::destroyStack(){
+	Node *temp;
 	
 	if(current == NULL){
 		std::cout << "Stack Destroyed." << std::endl;
 	}
 	else if(current -> prev == NULL){
-		std::cout << "Destorying: " << current -> data << std::endl;
 		temp = current;
 		current = NULL;
 		delete temp;
 		std::cout << "Stack Destroyed." << std::endl;
 	}
 	else{
-		std::cout << "Destorying: " << current -> data << std::endl;
 		temp = current;
 		current = current -> prev;
 		delete temp;
@@ -90,9 +88,8 @@ void stk<T>::destroyStack(){
 }
 
 // Pops off the top item on the stack
-template <class T>
-void stk<T>::pop(){
-	Node<T> *temp; 
+void stk::pop(){
+	Node *temp; 
 	
 	// Checks if the current pointer is pointed at nothing
 	if(current == NULL){
@@ -115,15 +112,13 @@ void stk<T>::pop(){
 }
 
 // Pushes a new item onto the stack
-template <class T>
-void stk<T>::push(T data[25][25], std::string fileName){
-	Node<T> *newNode;
-	newNode = new Node<T>;
+void stk::push(int** data){
+	Node *newNode;
+	newNode = new Node;
 	
 	if(current == NULL){
 		// FYI the '->' is like saying newNode.data BUT you have to use '->' instead with pointers
 		newNode -> data = data;
-		newNode -> fileName = fileName;
 		newNode -> prev = NULL;
 		
 		current = newNode;
@@ -132,7 +127,6 @@ void stk<T>::push(T data[25][25], std::string fileName){
 	}
 	else{
 		newNode -> data = data;
-		newNode -> fileName = fileName;
 		newNode -> prev = current;
 		
 		current = newNode;
@@ -142,8 +136,7 @@ void stk<T>::push(T data[25][25], std::string fileName){
 }
 
 // Overloaded pointer to correctly assign when two nodes are pointed at eachother
-template <class T>
-Node<T>& stk<T>::operator=(const Node<T> &other){
+Node& Node::operator=(const Node &other){
 	// 'this' is a pointer SOOOO if you want to check if it's pointed at the same memory location then dereference the other variable
 	if (this != &other){
 		// HOWEVER! if you want to make the data location that 'this' is pointed at be over written then you must dereference the 'this' pointer

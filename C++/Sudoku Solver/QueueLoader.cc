@@ -25,51 +25,67 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <fstream>
+#include <regex>
 #include "node_stack.h"
 
 // Queues up the files
 // CONSIDER RETURNING TO THIS AND MAKING IT A STRUCT IN STEAD
 class QueueLoader{
-	stk<int> stack;
-	std::vector<std::vector<int>> parsedData;
-	void parseData(std::string dataLine);
-	std::string scanFile();
+	stk stack;
+	
+	int** parsedData = new int*[25];
+	void parseData(std::string rawData);
+	//~ std::string scanFile();
 	
 	public:
 	QueueLoader();
-	void loadQueue();
-	std::vector<std::vector<int>> useData();
+	void loadQueue(std::string rawData);
+	int** useData();
 };
 
 // Constructor
 QueueLoader::QueueLoader(){
-	// nothing to create
+	for (int i = 0; i < 25; ++i)
+		parsedData[i] = new int[25];
 }
 
 // Takes in a string and then parses it into a 2D vector
-void QueueLoader::parseData(std::string dataLine){
+void QueueLoader::parseData(std::string rawData){
 
-	//PARSE THAT DATA BIG BOY!!!
+	std::regex exp("\'\'");
+	
+	rawData = std::regex_replace(rawData,exp,"-1");
+	
+	std::cout << rawData << std::endl;
+
+	// do stuff
 	
 }
 
-//Scans the file in and gets the string in the bin file
-std::string QueueLoader::scanFile(){
+//~ //Scans the file in and gets the string in the bin file
+//~ std::string QueueLoader::scanFile(){
 	
-	std::string lineOfData;
+	//~ std::string lineOfData;
 	
-	return lineOfData;
-}
+	//~ ifstream inFile;
+	//~ inFile.open
+	
+	//~ return lineOfData;
+//~ }
 
 // builds the stack and returns it for use in the main file
-void QueueLoader::loadQueue(){
-	stk<int> tmp;
+void QueueLoader::loadQueue(std::string rawData){
+	
+	parseData(rawData);
+	
+	//stack.push(parsedData);
 	
 	//Loop here to get all files!
 
 }
 
 // reads out parsed data
-std::vector<std::vector<int>> QueueLoader::useData(){
+int** QueueLoader::useData(){
 	return parsedData;
 }

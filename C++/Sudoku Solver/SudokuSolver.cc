@@ -9,15 +9,19 @@
 #include <string>
 #include "QueueLoader.cc"
 
-int main(int argc, char **argv)
+int main(int argc, char *argv[])
 {
 	QueueLoader queue;
 	
 	std::vector<std::vector<int>> parsedData;
 	
-	queue.loadQueue();
+	std::string rawData = "";
+	std::getline(std::cin, rawData);
 	
-	parsedData = queue.useData();
+	
+	queue.loadQueue(rawData);
+	
+	//parsedData = queue.useData();
 	
 	
 	return 0;
