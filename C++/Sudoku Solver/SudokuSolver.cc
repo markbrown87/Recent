@@ -11,7 +11,6 @@
 #include "QueueLoader.cc"
 
 void solveIt(int** data);
-void fillRow(int** data);
 int getLength(int** data);
 int* getArrayOfNums(int** data, int col);
 
@@ -22,6 +21,7 @@ class Boards{
 	Boards();
 	bool checkMutability(int row, int col);
 	void makeCopy(int ** data);
+	void fillRows(int** data);
 };
 
 
@@ -44,26 +44,18 @@ int main(int argc, char *argv[])
 	while(data != NULL){
 		
 		std::cout << "Solving Puzzle now...\n";
+		copy.makeCopy(data);
 		
-		int lth = getLength(data);
+		copy.fillRows(data);
 		
-		for(int i = 0; i < lth; ++i){
-			int* tmp = NULL;
-			
-			tmp = new int[lth];
-			
-			tmp = getArrayOfNums(data, i);
-			
-			std::cout << "Missing Numbers: ";
-			
-			for(int j = 0; j < lth; ++j)
-				std::cout << tmp[j] << " ";
-			
+		int count = getLength(data);
+		
+		for(int i = 0; i < count; ++i){
+			for(int j = 0; j < count; ++j)
+				std::cout << data[i][j] << " ";
+				
 			std::cout << std::endl;
-			
-			delete [] tmp;
 		}
-		
 		
 		queue.nextItem();
 		data = queue.useData();
@@ -114,8 +106,31 @@ int* getArrayOfNums(int** data, int row){
 }
 
 // fills in the rows with needed values
-void fillRow(int** data){
+void Boards::fillRows(int** data){
 	
+	int lth = getLength(data);			
+	int* tmp = NULL;
+	tmp = new int[lth];
+	int ticker = 0;
+	
+	for(int i = 0; i < lth; ++i){
+		for(int j = 0; j < lth; ++j){
+			
+			tmp = getArrayOfNums(data, i);
+			
+			if(copy[i][j] == 0){
+				
+				while(tmp[ticker] == 0 && ticker < lth) { ticker++; }
+				
+				data[i][j] = tmp[ticker];
+				ticker++;
+			}
+		}
+		ticker = 0;
+	}
+		
+		
+	delete [] tmp;
 }
 
 // returns to the count of the dimension
