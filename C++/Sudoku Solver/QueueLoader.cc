@@ -29,12 +29,9 @@
 #include "node_stack.h"
 
 // Queues up the files
-// CONSIDER RETURNING TO THIS AND MAKING IT A STRUCT IN STEAD
 class QueueLoader{
-	stk stack;
-	
+	stk stack;	
 	int** parsedData;
-	//~ void parseData(std::string rawData);
 	
 	public:
 	QueueLoader();
@@ -47,13 +44,6 @@ class QueueLoader{
 QueueLoader::QueueLoader(){
 	// nothing here
 }
-
-//~ // Takes in a string and then parses it into a 2D vector
-//~ void QueueLoader::parseData(std::string rawData){
-
-	
-//~ }
-
 
 // builds the stack and returns it for use in the main file
 void QueueLoader::loadQueue(std::string rawData){

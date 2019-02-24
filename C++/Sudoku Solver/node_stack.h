@@ -40,10 +40,7 @@ class stk{
 	void pop();
 	void push(int** data);
 	int** peek();
-	int** parseString(std::string rawData);
-	
-	//~ //overloaded '=' operator between two Node structs
-	//~ Node& operator=(const Node &other);  
+	int** parseString(std::string rawData); 
 	
 	protected:
 	void destroyStack();
@@ -54,7 +51,7 @@ class stk{
 // Constructor
 stk::stk(){
 	current = NULL;
-	//current -> data = NULL;
+
 }
 
 // Destructor
@@ -119,17 +116,13 @@ void stk::pop(){
 int** stk::parseString(std::string rawData){
 	
 	int **tmpPtr = new int*[25];
-	int j = 0;
 	
 	for (int i = 0; i < 25; ++i)
 		tmpPtr[i] = new int[25];
 	
-	for (int i = 0; i < 25; ++i){
-		for(j = 0; j < 25; ++j)
+	for (int i = 0; i < 25; ++i)
+		for(int j = 0; j < 25; ++j)
 			tmpPtr[i][j] = -1;
-		
-		j = 0;
-	}
 	
 
 	std::regex emptyData("\'\'");
@@ -150,7 +143,6 @@ int** stk::parseString(std::string rawData){
 
 	for(unsigned int k = 0; k < rows.size(); ++k){
 		if(rows[k] != ""){
-			//std::cout << rows[k] << ": In Vector" << std::endl;
 			while(std::regex_search(rows[k], match, digits)){
 				for (auto x:match) tmpPtr[m][n] = stoi(x);
 				rows[k] = match.suffix().str();

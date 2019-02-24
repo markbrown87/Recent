@@ -9,19 +9,24 @@
 #include <string>
 #include "QueueLoader.cc"
 
+void solveIt(int** data);
+void fillRow(int** data);
+int getDim(int** data);
 
-/*
- * NOTES:
- * 	- Issue with stack pointer (I think) where the data item in the Node is pointed at the QueueLoader Array
- * 		0 if that changes then so does all the data items on the stack
- * 		0 Possible fix: move the parsedData to the Node and all of it's functionality
- */
-
+class Boards{	
+	int copy[25][25];
+	
+	public:
+	Boards();
+	bool checkMutability(int row, int col);
+	void makeCopy(int ** data);
+};
 
 
 int main(int argc, char *argv[])
 {
 	QueueLoader queue;
+	Boards copy;
 	
 	int** data;
 	int j = 0;
@@ -38,19 +43,67 @@ int main(int argc, char *argv[])
 	while(data != NULL){
 		
 		for(int i = 0; i < 25; ++i){
-			for(j = 0; j < 25; ++j){
-				if(data[i][j] != -1)
+			for(int j = 0; j < 25; ++j)
+				if(data[i][j] != -1){
+					//solveIt(data);
 					std::cout << data[i][j] << " ";
-			}
-			j = 0;
+					
+				}
+				
 			if(data[i][j] != -1)
 				std::cout << std::endl;	
 		}
+		
+		std::cout << "Dim count: " << getDim(data) << std::endl;
 		
 		queue.nextItem();
 		data = queue.useData();
 	}
 	
 	
+
 	return 0;
+}
+
+// constructor
+Boards::Boards(){
+	for(int i = 0; i < 25; ++i)
+		for(int j = 0; j < 25; ++j)
+			copy[i][j] = -1;
+}
+
+// Make copy of board (check immutability)
+void Boards::makeCopy(int** data){
+	for(int i = 0; i < 25; ++i)
+		for(int j = 0; j < 25; ++j)
+			copy[i][j] = data[i][j];
+}
+
+// fills in the rows with needed values
+void fillRow(int** data){
+	// fill row with missing values
+}
+
+// returns to the count of the dimension
+int getDim(int** data){
+	int count = 0;
+	
+	for(int i = 0; i < 25; ++i){
+		if(data[i][0] != -1)
+			count++;
+	}
+	
+	return count;
+}
+
+// calculates score of the position
+
+// returns bool if value can be changed
+bool Boards::checkMutability(int row, int col){
+	return (copy[row][col] == -1);
+}
+
+// takes in the pointer and solves the puzzle
+void solveIt(int** data){
+	// 
 }
