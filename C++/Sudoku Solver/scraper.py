@@ -41,36 +41,11 @@ def FileChecker(pSize):
 	
 	myBinFolder = os.getcwd() + "/bin"
 	myBinFile = "/" + pSize + "x" + pSize + ".bin"
+	newFile = myBinFolder + "/" + pSize + "x" + pSize + ".bin"
 	
 	if not os.path.isdir(myBinFolder):
 		os.makedirs(myBinFolder)	
 		print('Creating Bin folder in: ', myBinFolder)
-
-	for files in os.listdir(myBinFolder):
-		if bool(re.match(pSize + "x" + pSize + "_*\d*\d*.bin", files)):
-			
-			if bool(re.match(pSize + "x" + pSize + ".bin", files)):
-				newFile = myBinFolder + "/" + pSize + "x" + pSize + "_01.bin"
-				
-			elif bool(re.match(pSize + "x" + pSize + "_\d\d.bin", files)):
-				files = re.search("\d\d", files).group(0)
-				
-				if incNum <= int(files):
-					incNum = int(files) + 1
-
-	
-	if incNum > 0:
-		
-		print('There was a file match...')
-		
-		if incNum < 10:
-			newFile = myBinFolder + "/" + pSize + "x" + pSize + "_0" + str(incNum) + ".bin"
-					
-		else:
-			newFile = myBinFolder + "/" + pSize + "x" + pSize + "_" + str(incNum) + ".bin"
-			
-	elif newFile == "":
-		newFile = myBinFolder + "/" + pSize + "x" + pSize + ".bin"
 	
 	return newFile
 
@@ -78,8 +53,10 @@ def FileChecker(pSize):
 def PrintList(pSize, com):
 	newFile = FileChecker(pSize)
 	
-	with open(newFile, "w") as handle:
-		print(com, file=handle)
+	with open(newFile, "a+") as handle:
+		# ~ handle.write(com)
+		print(com,file=handle, sep='\n')
+		# ~ print(com, file=handle)
 		print('Printed to file: ' + newFile)
 
 

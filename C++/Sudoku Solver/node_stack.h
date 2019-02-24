@@ -7,6 +7,9 @@
 
 #include <iostream>
 #include <string>
+#include <vector>
+#include <sstream>
+#include <regex>
 
 #ifndef __NODE_H__
 #define __NODE_H__
@@ -14,15 +17,19 @@
 //	Structure data structure is no different than a class other than Structure members are public by default 
 // 		.. and classes are private by default. Both have public, private, and protected.
 // 		-> Note: protected is just like private other than the variables can be inherited.
-template <class T>
+
 struct Node {
-	Node<T> *prev;
-	T data;
+	Node *prev;
+	int **data;
+	
+	//overloaded '=' operator between two Node structs
+	Node& operator=(const Node &other);
+	
 };
 
 //	Stack (or stk for short) is a class data structure that houses all the possibilies that a stack could
 //		.. use normally; pop, push, and peak.
-template <class T>
+
 class stk{
 	public:
 	// constructor and destructor
@@ -31,56 +38,52 @@ class stk{
 	
 	// basic functions that allow for normal stack functionality
 	void pop();
-	void push(T data);
-	T peek();
+	void push(int** data);
+	int** peek();
+	int** parseString(std::string rawData);
 	
-	//overloaded '=' operator between two Node structs
-	Node<T>& operator=(const Node<T> &other); 
+	//~ //overloaded '=' operator between two Node structs
+	//~ Node& operator=(const Node &other);  
 	
 	protected:
 	void destroyStack();
 	
-	Node<T> *current;
+	Node *current;
 };
 
 // Constructor
-template <class T>
-stk<T>::stk(){
-	current = NULL; 
+stk::stk(){
+	current = NULL;
+	//current -> data = NULL;
 }
 
 // Destructor
-template <class T>
-stk<T>::~stk(){
+stk::~stk(){
 	destroyStack();
 }
 
 // takes a peak at the current data
-template <class T>
-T stk<T>::peek(){
+int** stk::peek(){
 	if(current != NULL)
 		return current -> data;
 	else
-		return "Empty Stack";
+		return NULL;
 }
 
 // Destroys the Stack and all items
-template <class T>
-void stk<T>::destroyStack(){
-	Node<T> *temp;
+void stk::destroyStack(){
+	Node *temp;
 	
 	if(current == NULL){
 		std::cout << "Stack Destroyed." << std::endl;
 	}
 	else if(current -> prev == NULL){
-		std::cout << "Destorying: " << current -> data << std::endl;
 		temp = current;
 		current = NULL;
 		delete temp;
 		std::cout << "Stack Destroyed." << std::endl;
 	}
 	else{
-		std::cout << "Destorying: " << current -> data << std::endl;
 		temp = current;
 		current = current -> prev;
 		delete temp;
@@ -89,9 +92,8 @@ void stk<T>::destroyStack(){
 }
 
 // Pops off the top item on the stack
-template <class T>
-void stk<T>::pop(){
-	Node<T> *temp; 
+void stk::pop(){
+	Node *temp; 
 	
 	// Checks if the current pointer is pointed at nothing
 	if(current == NULL){
@@ -113,11 +115,60 @@ void stk<T>::pop(){
 	}
 }
 
+// Assigns data to the node item
+int** stk::parseString(std::string rawData){
+	
+	int **tmpPtr = new int*[25];
+	int j = 0;
+	
+	for (int i = 0; i < 25; ++i)
+		tmpPtr[i] = new int[25];
+	
+	for (int i = 0; i < 25; ++i){
+		for(j = 0; j < 25; ++j)
+			tmpPtr[i][j] = -1;
+		
+		j = 0;
+	}
+	
+
+	std::regex emptyData("\'\'");
+	std::regex digits("-*[0-9]");
+	std::regex lines("\\], \\[");
+	std::smatch match;
+	
+	std::vector<std::string> rows(5);
+	std::string token;
+	int m = 0, n = 0;
+	
+	rawData = std::regex_replace(rawData,emptyData,"'0'");	
+	rawData = std::regex_replace(rawData,lines,"]\n[");		
+	std::stringstream tmp(rawData);
+	
+	while(std::getline(tmp,token,'\n'))
+		rows.push_back(token);
+
+	for(unsigned int k = 0; k < rows.size(); ++k){
+		if(rows[k] != ""){
+			//std::cout << rows[k] << ": In Vector" << std::endl;
+			while(std::regex_search(rows[k], match, digits)){
+				for (auto x:match) tmpPtr[m][n] = stoi(x);
+				rows[k] = match.suffix().str();
+				++n;
+			}
+			++m;
+			n = 0;
+		}
+			
+	}
+	
+	return tmpPtr;
+}
+
 // Pushes a new item onto the stack
-template <class T>
-void stk<T>::push(T data){
-	Node<T> *newNode;
-	newNode = new Node<T>;
+void stk::push(int** data){
+	Node *newNode;
+	newNode = new Node;
 	
 	if(current == NULL){
 		// FYI the '->' is like saying newNode.data BUT you have to use '->' instead with pointers
@@ -139,8 +190,7 @@ void stk<T>::push(T data){
 }
 
 // Overloaded pointer to correctly assign when two nodes are pointed at eachother
-template <class T>
-Node<T>& stk<T>::operator=(const Node<T> &other){
+Node& Node::operator=(const Node &other){
 	// 'this' is a pointer SOOOO if you want to check if it's pointed at the same memory location then dereference the other variable
 	if (this != &other){
 		// HOWEVER! if you want to make the data location that 'this' is pointed at be over written then you must dereference the 'this' pointer
