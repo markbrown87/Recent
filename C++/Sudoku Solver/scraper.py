@@ -30,7 +30,6 @@ from bs4 import BeautifulSoup
 urlx2 = 'https://www.menneske.no/sudoku/2/eng/'
 urlx3 = 'https://www.menneske.no/sudoku/eng/'
 urlx4 = 'https://www.menneske.no/sudoku/4/eng/'
-urlx5 = 'https://www.menneske.no/sudoku/5/eng/'
 
 # Check if file already exists (change name of new file to include incremented value)
 def FileChecker(pSize):
@@ -79,20 +78,19 @@ def switch(value):
 	switcher = {
 		2: requests.get(urlx2).text,
 		3: requests.get(urlx3).text,
-		4: requests.get(urlx4).text,
-		5: requests.get(urlx5).text
+		4: requests.get(urlx4).text
 	}
 	
 	return switcher.get(value, "Invalid Selection")
 
-# takes in the argv as inputs to make a 2x2,3x3,4x4,5x5 sudoku puzzle and spits it into a bin file
+# takes in the argv as inputs to make a 2x2,3x3,4x4 sudoku puzzle and spits it into a bin file
 def main(args):
 	
 	if len(args) == 2:
 		try:
 			pSize = int(args[1])
 			
-			if pSize > 1 and pSize < 6:
+			if pSize > 1 and pSize < 5:
 				html = switch(pSize)
 				
 				soup = BeautifulSoup(html, 'lxml')

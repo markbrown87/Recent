@@ -1,7 +1,22 @@
-/* 
- * Created by Mark Brown
- * On 22/2/2019
- * To practice creating a stack data structure. Header file that handles the stack class and node structure
+/*
+ * node_stack.h
+ * 
+ * Copyright 2019 Mark Brown <mark_VM@mark_VM-VirtualBox>
+ * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
  * 
  */
 
@@ -40,10 +55,7 @@ class stk{
 	void pop();
 	void push(int** data);
 	int** peek();
-	int** parseString(std::string rawData);
-	
-	//~ //overloaded '=' operator between two Node structs
-	//~ Node& operator=(const Node &other);  
+	int** parseString(std::string rawData); 
 	
 	protected:
 	void destroyStack();
@@ -54,7 +66,7 @@ class stk{
 // Constructor
 stk::stk(){
 	current = NULL;
-	//current -> data = NULL;
+
 }
 
 // Destructor
@@ -119,17 +131,13 @@ void stk::pop(){
 int** stk::parseString(std::string rawData){
 	
 	int **tmpPtr = new int*[25];
-	int j = 0;
 	
 	for (int i = 0; i < 25; ++i)
 		tmpPtr[i] = new int[25];
 	
-	for (int i = 0; i < 25; ++i){
-		for(j = 0; j < 25; ++j)
+	for (int i = 0; i < 25; ++i)
+		for(int j = 0; j < 25; ++j)
 			tmpPtr[i][j] = -1;
-		
-		j = 0;
-	}
 	
 
 	std::regex emptyData("\'\'");
@@ -150,7 +158,6 @@ int** stk::parseString(std::string rawData){
 
 	for(unsigned int k = 0; k < rows.size(); ++k){
 		if(rows[k] != ""){
-			//std::cout << rows[k] << ": In Vector" << std::endl;
 			while(std::regex_search(rows[k], match, digits)){
 				for (auto x:match) tmpPtr[m][n] = stoi(x);
 				rows[k] = match.suffix().str();
