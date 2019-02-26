@@ -49,7 +49,21 @@ class LinkedList{
 // INSERT DESCRIPTIONS
 template <class type>
 void LinkedList<type>::insert(type data){
-	// INSERT DATA
+	Node<type>* temp;
+	temp = new Node<type>;
+	
+	if(current == NULL){
+		temp -> data = data;
+		temp -> next = NULL;
+		current = temp;
+		head = current;
+	} else if (current -> next = NULL){
+		temp -> data = data;
+		temp -> next = NULL;
+		current -> next = temp;
+		current = temp;
+	} else 
+		std::cout << "Error inserting data into list -> please resolve...\n";
 }
 
 template <class type>
