@@ -11,13 +11,11 @@ struct Node<type>{
 	Node();
 	~Node();
 	type* next;
-	type* prev;
 	type* data;
 };
 
 Node::Node(){
 	next = NULL;
-	prev = NULL;
 	data = NULL;
 }
 
@@ -32,7 +30,6 @@ template <class type>
 class LinkedList<type>{
 	Node<type>* current;
 	Node<type>* head;
-	Node<type>* tail;
 	void destoryList();
 	
 	
@@ -40,7 +37,6 @@ class LinkedList<type>{
 	LinkedList();
 	~LinkedList();
 	void insert(type data);
-	Node<type>* rEnd();
 	Node<type>* rBegin();
 	void assign(type data);
 	
@@ -53,9 +49,6 @@ void insert(type data){
 }
 
 template <class type>
-Node<type>* rEnd(){	return tail; }
-
-template <class type>
 Node<type>* rBegin(){ return head; }
 
 template <class type>
@@ -64,5 +57,5 @@ void assign(type data){
 }
 
 void destoryList(){
-	// destroy the list by removing either head to tail or tail to head in recursive fashion (make sure its reverse recursion)
+	// destroy the list by removing either head to tail in recursive fashion (make sure its reverse recursion)
 }
