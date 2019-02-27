@@ -1,5 +1,5 @@
 /*
- * node_stack.h
+ * node_queue.h
  * 
  * Copyright 2019 Mark Brown <mark_VM@mark_VM-VirtualBox>
  * 
@@ -26,8 +26,8 @@
 #include <sstream>
 #include <regex>
 
-#ifndef __NODE_H__
-#define __NODE_H__
+#ifndef __NODE_QUEUE_H__
+#define __NODE_QUEUE_H__
 
 //	Structure data structure is no different than a class other than Structure members are public by default 
 // 		.. and classes are private by default. Both have public, private, and protected.
@@ -42,76 +42,76 @@ struct Node {
 	
 };
 
-//	Stack (or stk for short) is a class data structure that houses all the possibilies that a stack could
+//	Queue(or stk for short) is a class data structure that houses all the possibilies that a Queue could
 //		.. use normally; pop, push, and peak.
 
-class stk{
+class Queue{
 	public:
 	// constructor and destructor
-	stk();
-	~stk();
+	Queue();
+	~Queue();
 	
-	// basic functions that allow for normal stack functionality
+	// basic functions that allow for normal Queue functionality
 	void pop();
 	void push(int** data);
 	int** peek();
 	int** parseString(std::string rawData); 
 	
 	protected:
-	void destroyStack();
+	void destroyQueue();
 	
 	Node *current;
 };
 
 // Constructor
-stk::stk(){
+Queue::Queue(){
 	current = NULL;
 
 }
 
 // Destructor
-stk::~stk(){
-	destroyStack();
+Queue::~Queue(){
+	destroyQueue();
 }
 
 // takes a peak at the current data
-int** stk::peek(){
+int** Queue::peek(){
 	if(current != NULL)
 		return current -> data;
 	else
 		return NULL;
 }
 
-// Destroys the Stack and all items
-void stk::destroyStack(){
+// Destroys the Queue and all items
+void Queue::destroyQueue(){
 	Node *temp;
 	
 	if(current == NULL){
-		std::cout << "Stack Destroyed." << std::endl;
+		std::cout << "Queue Destroyed." << std::endl;
 	}
 	else if(current -> prev == NULL){
 		temp = current;
 		current = NULL;
 		delete temp;
-		std::cout << "Stack Destroyed." << std::endl;
+		std::cout << "Queue Destroyed." << std::endl;
 	}
 	else{
 		temp = current;
 		current = current -> prev;
 		delete temp;
-		destroyStack();
+		destroyQueue();
 	}
 }
 
-// Pops off the top item on the stack
-void stk::pop(){
+// Pops off the top item on the Queue
+void Queue::pop(){
 	Node *temp; 
 	
 	// Checks if the current pointer is pointed at nothing
 	if(current == NULL){
 		std::cout << "No more items to pop." << std::endl;
 	}
-	// (hold on to your seat) Checks if the (current pointer pointed at the) item on the stack is pointing at nothing
+	// (hold on to your seat) Checks if the (current pointer pointed at the) item on the Queue is pointing at nothing
 	else if(current->prev == NULL){
 		temp = current;
 		current = NULL;
@@ -128,7 +128,7 @@ void stk::pop(){
 }
 
 // Assigns data to the node item
-int** stk::parseString(std::string rawData){
+int** Queue::parseString(std::string rawData){
 	
 	int **tmpPtr = new int*[25];
 	
@@ -172,8 +172,8 @@ int** stk::parseString(std::string rawData){
 	return tmpPtr;
 }
 
-// Pushes a new item onto the stack
-void stk::push(int** data){
+// Pushes a new item onto the Queue
+void Queue::push(int** data){
 	Node *newNode;
 	newNode = new Node;
 	
@@ -184,7 +184,7 @@ void stk::push(int** data){
 		
 		current = newNode;
 		
-		std::cout << "Pushed Data Item on the Stack (New Stack Item)." << std::endl;
+		std::cout << "Pushed Data Item on the Queue (New Queue Item)." << std::endl;
 	}
 	else{
 		newNode -> data = data;
@@ -192,7 +192,7 @@ void stk::push(int** data){
 		
 		current = newNode;
 		
-		std::cout << "Pushed Data Item on to Stack (previous data present)." << std::endl;
+		std::cout << "Pushed Data Item on to Queue (previous data present)." << std::endl;
 	}
 }
 

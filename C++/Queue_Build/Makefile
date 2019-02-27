@@ -1,7 +1,7 @@
 CC=g++
 CFLAGS = -o
-CPP = stackExample.cpp
-NAME = stackExample
+CPP = queueExample.cpp
+NAME = queueExample
 
 
 all:
