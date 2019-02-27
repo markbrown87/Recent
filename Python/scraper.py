@@ -38,7 +38,8 @@ def FileChecker(pSize):
 	newFile = ""
 	incNum = 0
 	
-	myBinFolder = os.getcwd() + "/bin"
+	#myBinFolder = os.getcwd() + "/bin"
+	myBinFolder = "/home/testbot1/Repos/Recent/C++/Sudoku_Solver/bin"
 	myBinFile = "/" + pSize + "x" + pSize + ".bin"
 	newFile = myBinFolder + "/" + pSize + "x" + pSize + ".bin"
 	
