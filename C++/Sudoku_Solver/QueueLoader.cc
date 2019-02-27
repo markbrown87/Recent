@@ -26,11 +26,11 @@
 #include <string>
 #include <vector>
 #include <fstream>
-#include "node_queue.h"
+#include "node_stack.h"
 
 // Queues up the files
 class QueueLoader{
-	Queue queue;	
+	stk stack;	
 	int** parsedData;
 	
 	public:
@@ -51,20 +51,20 @@ QueueLoader::~QueueLoader(){
 	delete [] parsedData;
 }
 
-// builds the queue and returns it for use in the main file
+// builds the stack and returns it for use in the main file
 void QueueLoader::loadQueue(std::string rawData){
 	
-	parsedData = queue.parseString(rawData);
-	queue.push(parsedData);
+	parsedData = stack.parseString(rawData);
+	stack.push(parsedData);
 	
 }
 
 // reads out parsed data
 int** QueueLoader::useData(){
-	return queue.peek();
+	return stack.peek();
 }
 
 // pops and cycles to next item
 void QueueLoader::nextItem(){
-	queue.pop();
+	stack.pop();
 }

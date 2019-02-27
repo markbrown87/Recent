@@ -1,7 +1,7 @@
 /* 
  * Created by Mark Brown
  * On 22/2/2019
- * To practice creating a Queue data structure. Header file that handles the Queue class and node structure
+ * To practice creating a stack data structure. Header file that handles the stack class and node structure
  * 
  */
 
@@ -20,16 +20,16 @@ struct Node {
 	T data;
 };
 
-//	Queue (or stk for short) is a class data structure that houses all the possibilies that a Queue could
+//	Stack (or stk for short) is a class data structure that houses all the possibilies that a stack could
 //		.. use normally; pop, push, and peak.
 template <class T>
-class Queue{
+class stk{
 	public:
 	// constructor and destructor
-	Queue();
-	~Queue();
+	stk();
+	~stk();
 	
-	// basic functions that allow for normal Queue functionality
+	// basic functions that allow for normal stack functionality
 	void pop();
 	void push(T data);
 	T peek();
@@ -38,66 +38,66 @@ class Queue{
 	Node<T>& operator=(const Node<T> &other); 
 	
 	protected:
-	void destroyQueue();
+	void destroyStack();
 	
 	Node<T> *current;
 };
 
 // Constructor
 template <class T>
-Queue<T>::Queue(){
+stk<T>::stk(){
 	current = NULL; 
 }
 
 // Destructor
 template <class T>
-Queue<T>::~Queue(){
-	destroyQueue();
+stk<T>::~stk(){
+	destroyStack();
 }
 
 // takes a peak at the current data
 template <class T>
-T Queue<T>::peek(){
+T stk<T>::peek(){
 	if(current != NULL)
 		return current -> data;
 	else
-		return "Empty Queue";
+		return "Empty Stack";
 }
 
-// Destroys the Queue and all items
+// Destroys the Stack and all items
 template <class T>
-void Queue<T>::destroyQueue(){
+void stk<T>::destroyStack(){
 	Node<T> *temp;
 	
 	if(current == NULL){
-		std::cout << "Queue Destroyed." << std::endl;
+		std::cout << "Stack Destroyed." << std::endl;
 	}
 	else if(current -> prev == NULL){
 		std::cout << "Destorying: " << current -> data << std::endl;
 		temp = current;
 		current = NULL;
 		delete temp;
-		std::cout << "Queue Destroyed." << std::endl;
+		std::cout << "Stack Destroyed." << std::endl;
 	}
 	else{
 		std::cout << "Destorying: " << current -> data << std::endl;
 		temp = current;
 		current = current -> prev;
 		delete temp;
-		destroyQueue();
+		destroyStack();
 	}
 }
 
-// Pops off the top item on the Queue
+// Pops off the top item on the stack
 template <class T>
-void Queue<T>::pop(){
+void stk<T>::pop(){
 	Node<T> *temp; 
 	
 	// Checks if the current pointer is pointed at nothing
 	if(current == NULL){
 		std::cout << "No more items to pop." << std::endl;
 	}
-	// (hold on to your seat) Checks if the (current pointer pointed at the) item on the Queue is pointing at nothing
+	// (hold on to your seat) Checks if the (current pointer pointed at the) item on the stack is pointing at nothing
 	else if(current->prev == NULL){
 		temp = current;
 		current = NULL;
@@ -113,9 +113,9 @@ void Queue<T>::pop(){
 	}
 }
 
-// Pushes a new item onto the Queue
+// Pushes a new item onto the stack
 template <class T>
-void Queue<T>::push(T data){
+void stk<T>::push(T data){
 	Node<T> *newNode;
 	newNode = new Node<T>;
 	
@@ -126,7 +126,7 @@ void Queue<T>::push(T data){
 		
 		current = newNode;
 		
-		std::cout << "Pushed Data Item on the Queue (New Queue Item)." << std::endl;
+		std::cout << "Pushed Data Item on the Stack (New Stack Item)." << std::endl;
 	}
 	else{
 		newNode -> data = data;
@@ -134,13 +134,13 @@ void Queue<T>::push(T data){
 		
 		current = newNode;
 		
-		std::cout << "Pushed Data Item on to Queue (previous data present)." << std::endl;
+		std::cout << "Pushed Data Item on to Stack (previous data present)." << std::endl;
 	}
 }
 
 // Overloaded pointer to correctly assign when two nodes are pointed at eachother
 template <class T>
-Node<T>& Queue<T>::operator=(const Node<T> &other){
+Node<T>& stk<T>::operator=(const Node<T> &other){
 	// 'this' is a pointer SOOOO if you want to check if it's pointed at the same memory location then dereference the other variable
 	if (this != &other){
 		// HOWEVER! if you want to make the data location that 'this' is pointed at be over written then you must dereference the 'this' pointer

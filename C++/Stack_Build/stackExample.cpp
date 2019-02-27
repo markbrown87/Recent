@@ -22,7 +22,7 @@ int main(){
 // Menu that displays what options you have (Currently templated Node class BUT only accepts strings for now when using Menu() interaction)
 void menu(){
 	
-	Queue<std::string> tmpQueue;
+	stk<std::string> tmpStack;
 	int input;
 	std::string tmpData;
 
@@ -48,15 +48,15 @@ void menu(){
 			case 1:
 				std::cout << "What string value would you like to input into the stack?\n";
 				std::getline(std::cin, tmpData);
-				tmpQueue.push(tmpData);
+				tmpStack.push(tmpData);
 				break;
 				
 			case 2:
-				tmpQueue.pop();
+				tmpStack.pop();
 				break;
 				
 			case 3:
-				std::cout << "Data peeked: " << tmpQueue.peek() << std::endl;
+				std::cout << "Data peeked: " << tmpStack.peek() << std::endl;
 				break;
 
 			case 4:
