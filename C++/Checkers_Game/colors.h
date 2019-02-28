@@ -20,7 +20,9 @@
 //
 //  all credit given to Matthew Beldyk for writing this file
 //  he gave me permission to try out in my programs
-//  just wanted to use to make everything look nice
+//  just wanted to use to make everything looked nice
+//										
+//											- Mark Brown
 //
 //***********************************************************
 

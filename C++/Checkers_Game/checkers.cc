@@ -1,10 +1,28 @@
 /*
-* Mark Brown
-*	11/04/2016
-* Description: A file used for the game of checkers which is the child of the class game. This will house the
-* meat and potatoes of the checkers game handling the restart, make_move, is_legal, and display_status of the game.
-*
-*/
+ * checkers.cc
+ * 
+ * Copyright 2019 Mark Brown <mark_VM@mark_VM-VirtualBox>
+ * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
+ * 
+ *
+ * NOTE: Savitch developed code in this file and I added my own to it and
+ *        or modified it to work with my Checkers game
+ *
+ */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -42,6 +60,7 @@ namespace main_savitch_14{
 		game::restart();
 	}
 
+	// Displays the board on the terminal screen for all to see
 	void checkers::display_status() const{
 			char letter = 'A';
 			for(int a = 0; a < 8; a++){
@@ -67,6 +86,7 @@ namespace main_savitch_14{
 		std::cout << endl << YELLOW << "      1    2    3    4    5    6    7    8" << RESET <<endl;
 		std::cout << endl << "Good piece(s) count: " << get_count(3) <<" and Evil piece(s) count: " << get_count(2) << endl << endl;
 	}
+	
 	//function used to check if the move is legal or not
 	bool checkers::is_legal(const std::string& move)const{
 		int current_alpha, next_alpha, current_num, next_num, holder, item;
@@ -106,6 +126,7 @@ namespace main_savitch_14{
 		return check;
 	}
 
+	// Makes the move on the board (After being checked if legal)
 	void checkers::make_move(const std::string& move){
 		int current_alpha, next_alpha, current_num, next_num, holder, item;
 		current_alpha = convert_to_number(toupper(move[0]));
@@ -133,6 +154,7 @@ namespace main_savitch_14{
 		//increments the move_number
 		game::make_move(move);
 	}
+	
 	//function used to convert the letter 
 	int checkers::convert_to_number(char a) const{
 		if(a == 'A')
@@ -155,6 +177,7 @@ namespace main_savitch_14{
 			return 9;
 	}
 	
+	// Helper function that converts numbers to letters
 	char checkers::convert_back(int a) const{
 		if(a == 0)
 			return 'A';
@@ -173,6 +196,7 @@ namespace main_savitch_14{
 		else if(a == 7)
 			return 'H';
 	}
+	
 	//counts the number of pieces on the board in regards to 'int a'
 	int checkers::get_count(int a)const{
 		int tmp =0;
@@ -184,11 +208,13 @@ namespace main_savitch_14{
 		}
 		return tmp;
 	}
+	
 	//checks for game over
 	bool checkers::is_game_over() const{
 		if(get_count(2) == 0 || get_count(3) == 0)
 			return true;
 	}
+	
 	//checks is it's the human move
 	bool checkers::is_human_move()const{
 		if(game::next_mover() == 0)
@@ -196,6 +222,7 @@ namespace main_savitch_14{
 		else
 			return false;
 	}
+	
 	//checks if it's the computer's move
 	bool checkers::is_computer_move()const{
 		if(game::next_mover() == 2)
@@ -203,6 +230,7 @@ namespace main_savitch_14{
 		else
 			return false;
 	}
+	
 	//checks if it's a legel human move
 	bool checkers::is_regular_move(int current_alpha, int current_num, int next_alpha, int next_num)const{
 		if(is_human_move()){
@@ -230,6 +258,7 @@ namespace main_savitch_14{
 		else return false;
 	}
 	
+	// Checks if the move can jump or not
 	bool checkers::is_jump_move(int current_alpha, int current_num, int next_alpha, int next_num, int item)const{
 		if(is_human_move()){
 			if(item == 3){
@@ -268,6 +297,8 @@ namespace main_savitch_14{
 			}
 		}
 	}
+	
+	// Makes the jump if jump move is legal
 	void checkers::make_jump_move(int current_alpha, int current_num, int next_alpha, int next_num){
 		if((next_alpha == current_alpha-2)&&(next_num == current_num+2))
 			board[next_alpha+1][next_num-1].set_space(1);
@@ -278,6 +309,8 @@ namespace main_savitch_14{
 		else if((next_alpha == current_alpha+2)&&(next_num == current_num-2))
 			board[next_alpha-1][next_num+1].set_space(1);
 	}
+	
+	// Turns the pawn into a king
 	void checkers::turn_king(int next_alpha, int next_num){
 		if(is_human_move()){
 			if(next_alpha == 0)
@@ -289,6 +322,7 @@ namespace main_savitch_14{
 		}
 	}
 	
+	// computes the moves of the AI player using a scoring system
 	void checkers::compute_moves(std::queue<string>& moves)const{
 		string current, move1, move2, move3, move4, move5, move6, move7, move8, holder;
 		char a,a1,a2,a3,a4,a5,a6,a7,a8,n,n1,n2,n3,n4,n5,n6,n7,n8;
@@ -384,6 +418,7 @@ namespace main_savitch_14{
 			}
 	}
 	
+	// returns a score for the AI
 	int checkers::evaluate()const{
 		int points = 0;
 		for(int i=0;i<8;++i){
