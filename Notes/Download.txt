@@ -1,0 +1,11 @@
+Note:
+	All files/programs/helpers will have a '[]' at the end. This means that it is still not downloaded and used; however '[x]' means the tool has been downloaded.
+	
+
+
+Cppcheck []
+Coverity Scan[]
+Fuzzy Inputs[]
+
+// They're too many to consider -> You might want to see the github page (listed below) when you have developed a project or going to to see which best fits your approach
+https://github.com/lefticus/cppbestpractices/blob/master/02-Use_the_Tools_Available.md

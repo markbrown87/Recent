@@ -1,0 +1,1 @@
+https://github.com/lefticus/cppbestpractices/blob/master/00-Table_of_Contents.md
